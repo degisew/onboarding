@@ -4,8 +4,6 @@ from django.views import View
 from .form import CustomerRequestForm
 from .models import CustomerRequest
 
-# Create your views here.
-
 
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
@@ -19,7 +17,13 @@ class createOnBoardRequest(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             # <process form cleaned data>
-            print(form.cleaned_data)
-            return HttpResponseRedirect("/success/")
+            form.save()
+            form = self.form_class()
 
         return render(request, self.template_name, {"form": form})
+    
+
+class CRM(View):
+    def get(self, request):
+        requests = CustomerRequest.objects.all()
+        return render(request, 'customerRequest/crm.html', {'requests': requests})

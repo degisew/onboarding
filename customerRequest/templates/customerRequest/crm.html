@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block content%}
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in requests %}
+            <tr>
+                <td>{{ request.service_type }}</td>
+                <td>{{ request.request_description }}</td>
+                <td>{{ request.expected_date }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
