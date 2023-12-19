@@ -23,7 +23,7 @@ class CustomerRequest(models.Model):
     expected_date = models.DateTimeField()
     anything_else = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=255, default='initiation')
+    status = models.CharField(max_length=255, default='Initiation')
     updated_at = models.DateTimeField(auto_now=True)
 
 
