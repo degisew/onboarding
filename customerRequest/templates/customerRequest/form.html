@@ -1,7 +1,10 @@
-{% extends 'index.html'%} {% block content %}
+{% extends 'index.html'%} 
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% block content %}
 <form action="" method="POST">
     {% csrf_token %}
   {{form.as_p}}
-  <input type="submit"  value="Submit" />
+  <input type="submit"  class="btn btn-primary" value="Submit" />
 </form>
 {% endblock %}

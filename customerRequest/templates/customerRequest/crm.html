@@ -1,22 +1,183 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% load static %} {% block content%}
+ 
 
-{% block content%}
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Customer</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for request in requests %}
-            <tr>
-                <td>{{ request.service_type }}</td>
-                <td>{{ request.request_description }}</td>
-                <td>{{ request.expected_date }}</td>
-            </tr>
+  <div class="container position-relative">
+    <div class="container my-3 my-lg-5">
+      <div class="row justify-content-center vh-100">
+        <!-- To do tasks -->
+        {% for stage in stages %}
+        <div
+          class="col-3 shadow-sm mx-2 bg-light py-2"
+          id="{{ stage.name }}"
+          ondrop="drop(event)"
+          ondragover="allowDrop(event)"
+        >
+          <h5>{{ stage.name }}</h5>
+          {% for card in stage.cards%}
+          <div
+            class="d-flex flex-column align-items-center justify-content-center mt-3">
+            <!-- card -->
+            <div
+              id="todotarget1"
+              ondragstart="dragStart(event,'{{card.id}}')"
+              draggable="true"
+              class="card rounded-0 w-100 mb-3 border-0 border-start border-primary border-3 shadow-sm">
+              <div class="card-body px-3 py-3">
+                <h5 class="card-title">{{card.service_type}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  {{card.about_platform}}
+                </h6>
+                <p class="card-text">{{card.request_description}}</p>
+                <a href="#" class="card-link">Check</a>
+                <a href="#" class="card-link">Another link</a>
+                <input type="hidden" value="{{card.id}}" />
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
         {% endfor %}
-    </tbody>
-</table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+   function dragStart(event,val) {
+    event.dataTransfer.setData("Text", event.target.id);
+    event.dataTransfer.setData("val", val);
+
+}
+function allowDrop(event) {
+    event.preventDefault();
+}
+function drop(event) {
+    if (event.target.id != "") {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("Text");
+        const val = event.dataTransfer.getData("val");
+
+        event.target.appendChild(document.getElementById(data));
+        console.log(val,event.target.id)
+        user = {
+            "cardId":  val,
+            "toId":  event.target.id
+        }
+
+        // Options to be given as parameter 
+        // in fetch for making requests
+        // other then GET
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type':
+                    'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user)
+        }
+
+        // Fake api for making post requests
+        let fetchRes = fetch(
+            "http://127.0.0.1:8000/customer/move_card/",
+            options);
+        fetchRes.then(res =>
+            res.json()).then(data => {
+                console.log("data###", data)
+            })
+
+        // todo list
+        if (event.target.id == "todo") {
+            document.getElementById(data).classList.remove("border-warning", "border-success");
+            document.getElementById(data).classList.add("border-primary"); 
+        }
+        // progress list
+        if (event.target.id == "progress") {
+            document.getElementById(data).classList.remove("border-primary", "border-success");
+            document.getElementById(data).classList.add("border-warning"); 
+        }
+        // completed list
+        if (event.target.id == "completed") {
+            document.getElementById(data).classList.remove("border-warning", "border-success");
+            document.getElementById(data).classList.add("border-success"); 
+        }
+    }
+}
+  </script>
+  <style>
+    body {
+      background: darkgreen;
+    }
+
+    .fill {
+      position: relative;
+      height: 150px;
+      width: 150px;
+      top: 5px;
+      left: 5px;
+      cursor: pointer;
+    }
+
+    .empty {
+      display: inline-block;
+      height: 160px;
+      width: 160px;
+      margin: 10px;
+      /* background-color: #ccc; */
+    }
+
+    .hold {
+      border: 4px solid lightgray;
+    }
+
+    .hovered {
+      background: #ddd;
+      /*border-style: dashed;*/
+    }
+
+    .invisible {
+      display: none;
+    }
+  </style>
+  <!-- <div class="qualification">
+    <h4>Qualification</h4>
+    {% for request in requests %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{request.service_type}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{request.about_platform}}</h6>
+          <p class="card-text">{{request.request_description}}</p>
+          <a href="#" class="card-link">Check</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+      {% endfor%}
+  </div>
+  <div class="proposition">
+    <h4>Proposition</h4>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+  </div>
+  <div class="negotiation">
+    <h4>Negotiation</h4>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+  </div>
+  <div class="won">Won</div>
+  <div class="lost">Lost</div> -->
+</div>
+{% endblock %} {% block styles %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 {% endblock %}
