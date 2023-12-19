@@ -23,20 +23,17 @@ class createOnBoardRequest(View):
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        print(type(request.POST))
+        description = request.POST.get('description')
         service_type = request.POST.get('service_type')
         number_of_users = request.POST.get('users')
+        print("###########",description)
         about = request.POST.get('about_platform')
-        description = request.POST.get('description')
         expected_date = request.POST.get('date')
         comments = request.POST.get('comments')
         new_request = CustomerRequest(service_type=service_type, number_of_users=number_of_users,
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
-        # if new_request.is_valid():
-        # <process form cleaned data>
-        # new_request.save()
-        # new_request = cr()
-
+        if new_request:
+            new_request.save()
         return render(request, self.template_name)
 
 
