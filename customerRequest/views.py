@@ -12,41 +12,59 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 # @login_required(login_url='/login/')
+
+
 class createOnBoardRequest(View):
-    form_class = CustomerRequestForm
+    # form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
 
     def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {"form": form})
+        # form = self.form_class()
+        return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            # <process form cleaned data>
-            form.save()
-            form = self.form_class()
+        print(type(request.POST))
+        service_type = request.POST.get('service_type')
+        number_of_users = request.POST.get('users')
+        about = request.POST.get('about_platform')
+        description = request.POST.get('description')
+        expected_date = request.POST.get('date')
+        comments = request.POST.get('comments')
+        new_request = CustomerRequest(service_type=service_type, number_of_users=number_of_users,
+                                      about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
+        # if new_request.is_valid():
+        # <process form cleaned data>
+        # new_request.save()
+        # new_request = cr()
 
-        return render(request, self.template_name, {"form": form})
-    
+        return render(request, self.template_name)
+
 
 class CRM(View):
     def get(self, request, *args, **kwargs):
         # requests = CustomerRequest.objects.filter(status='initiation')
         stages = [
-            {'id': 1, 'name': 'Initiation', 'cards': CustomerRequest.objects.filter(status='initiation')},
-            {'id': 2, 'name': 'Processing', 'cards': CustomerRequest.objects.filter(status='Processing')},
-            {'id': 3, 'name': 'Completed', 'cards': CustomerRequest.objects.filter(status='Completed')},
+            {'id': 1, 'name': 'Initiation', 'cards': CustomerRequest.objects.filter(
+                status='Initiation').order_by('-created_at')},
+            {'id': 2, 'name': 'Proposition',
+                'cards': CustomerRequest.objects.filter(status='Proposition')},
+            {'id': 3, 'name': 'Negotiation',
+                'cards': CustomerRequest.objects.filter(status='Negotiation')},
+            {'id': 4, 'name': 'Won',
+                'cards': CustomerRequest.objects.filter(status='Won')},
+            {'id': 5, 'name': 'Lost',
+                'cards': CustomerRequest.objects.filter(status='Lost')},
         ]
         return render(request, 'customerRequest/crm.html', {'stages': stages})
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MoveCardView(View):
     def post(self, request, *args, **kwargs):
-        data=json.loads(request.body)
+        data = json.loads(request.body)
         cardId = data.get('cardId')
         to_id = data.get('toId')
-        print(cardId,to_id)
+        print(cardId, to_id)
         print(request.body)
         # Logic to move card in the backend (update CRM status)
         # For simplicity, we'll just update the status field in the model
@@ -54,13 +72,7 @@ class MoveCardView(View):
         card.status = to_id
         card.save()
 
-        return JsonResponse({'success': True})
-
-
-
-
-
-
+        return HttpResponse('success')
 
 
 def register(request):
@@ -87,8 +99,8 @@ def user_login(request):
             return redirect('create-transact')
         else:
             return HttpResponse('Authentication Failed!')
-        
-    return render(request, 'customerRequest/login_register_form.html', {'form':form, 'btn_value': 'login'})
+
+    return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'login'})
 
 
 def user_logout(request):
