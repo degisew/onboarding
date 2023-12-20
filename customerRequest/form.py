@@ -15,8 +15,7 @@ class CustomerRequestForm(forms.ModelForm):
     ))
     class Meta:
         model = CustomerRequest
-        fields = ['service_type', 'number_of_users', 'about_platform',
-                  'request_description', 'expected_date', 'anything_else']
+        fields = ['expected_date']
         
         # labels = ["", ""]
 

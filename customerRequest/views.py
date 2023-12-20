@@ -15,21 +15,22 @@ from django.utils.decorators import method_decorator
 
 
 class createOnBoardRequest(View):
-    # form_class = CustomerRequestForm
+    form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
 
     def get(self, request):
-        # form = self.form_class()
-        return render(request, self.template_name)
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
+        form = self.form_class()
         description = request.POST.get('description')
         service_type = request.POST.get('service_type')
         number_of_users = request.POST.get('users')
         print("###########",description)
         about = request.POST.get('about_platform')
-        expected_date = request.POST.get('date')
-        comments = request.POST.get('comments')
+        expected_date = request.POST.get('expected_date')
+        comments = request.POST.get('comments')  
         new_request = CustomerRequest(service_type=service_type, number_of_users=number_of_users,
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
         if new_request:

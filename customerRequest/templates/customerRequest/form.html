@@ -22,9 +22,11 @@
         <label for="inputAddress" class="form-label">Request Description<span class="text-danger">*</span></label>
         <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
       </div>
-      <div class="mb-3">
-        <label for="dob" class="form-label">Expected Date</label>
-        <input type="text" name="date" id="datepicker" class="form-control datepicker" required>
+      <div class="mb-3"> 
+        <label for="id_expected_date">Expected Date:</label>
+        <input type="date" name="expected_date" placeholder="yyyy-mm-dd (DOB)" class="form-control" required="" id="id_expected_date">
+        <!-- <label for="dob" class="form-label">Expected Date</label>
+        <input type="text" name="date" id="datepicker" class="form-control datepicker" required> -->
     </div>
       <div class="col-12">
         <label for="comments" class="form-label">Anything else(optional)</label>
@@ -55,6 +57,7 @@
       rel="stylesheet"
       href="https://code.jquery.com/ui/1.12.1/themes/base/theme.css"
     />
+
 {% endblock %}
 
 <script>
@@ -62,10 +65,13 @@
   $(function () {
       // Target the input with the "datepicker" class
       $(".datepicker").datepicker({
-          dateFormat: "yy-mm-dd",  // Adjust the date format as needed
+          dateFormat: "yyyy-mm-dd",  // Adjust the date format as needed
           changeMonth: true,
           changeYear: true,
           yearRange: "-100:+0",  // Allow selection of the last 100 years
       });
   });
 </script>
+
+
+{{form.as_p}}
