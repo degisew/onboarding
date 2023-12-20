@@ -1,8 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Group, Permission
-from django.db import models
 from django.conf import settings
-
+from django.db import models
 
 class CustomUser(AbstractUser):
     is_fraud = models.BooleanField(default=False)
@@ -26,4 +25,32 @@ class CustomerRequest(models.Model):
     status = models.CharField(max_length=255, default='Initiation')
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.status  
 
+
+class Company(models.Model):
+    INDUSTRY_CHOICES = [
+    ('IT', 'Information Technology'),
+    ('finance', 'Finance'),
+    ('healthcare', 'Healthcare'),
+    ('business', 'Business')
+    ]
+    ETH = 'ETH'
+    COUNTRY_CHOICES = [
+        (ETH, 'Ethiopia')
+    ]
+    name = models.CharField(max_length=255)
+    country = models.CharField(max_length=255, choices=COUNTRY_CHOICES)
+    city = models.CharField(max_length=255)
+    phone = models.IntegerField()
+    tin_number = models.IntegerField()
+    business_classification = models.CharField(max_length=255)
+    industry = models.TextField(max_length=255, choices=INDUSTRY_CHOICES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='company')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return self.name

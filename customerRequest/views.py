@@ -4,8 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.contrib import auth
-from .form import CustomerRequestForm, CreateUserForm, LoginForm
-from .models import CustomerRequest
+from .form import CompanyProfileForm, CustomerRequestForm, CreateUserForm, LoginForm
+from .models import CustomerRequest, Company
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -27,7 +27,6 @@ class createOnBoardRequest(View):
         description = request.POST.get('description')
         service_type = request.POST.get('service_type')
         number_of_users = request.POST.get('users')
-        print("###########",description)
         about = request.POST.get('about_platform')
         expected_date = request.POST.get('expected_date')
         comments = request.POST.get('comments')  
@@ -37,6 +36,17 @@ class createOnBoardRequest(View):
             new_request.save()
         return render(request, self.template_name)
 
+class CompanyProfile(View):
+    form_class = CompanyProfileForm
+    template_name = 'customerRequest/form.html'
+
+    def get(self, request):
+         form = self.form_class()
+         return render(request, 'customerRequest/profile.html', {'form': form})
+    
+    def post(self, request):
+        form = self.form_class()
+        return render(request, self.template_name)
 
 class CRM(View):
     def get(self, request, *args, **kwargs):
