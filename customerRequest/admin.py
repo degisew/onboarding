@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from customerRequest.models import CustomerRequest
+from .models import CustomerRequest,Company
 
 # Register your models here.
 
 
 admin.site.register(CustomerRequest)
+admin.site.register(Company)
