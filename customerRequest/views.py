@@ -1,13 +1,11 @@
 import json
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.views import View
-from django.contrib import auth
-from .form import CompanyProfileForm, CustomerRequestForm, CreateUserForm, LoginForm
+from django.contrib.auth.views import LoginView
+from django.contrib import messages
+from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
 from .models import CustomerRequest, Company
-
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
@@ -29,24 +27,31 @@ class createOnBoardRequest(View):
         number_of_users = request.POST.get('users')
         about = request.POST.get('about_platform')
         expected_date = request.POST.get('expected_date')
-        comments = request.POST.get('comments')  
+        comments = request.POST.get('comments')
         new_request = CustomerRequest(service_type=service_type, number_of_users=number_of_users,
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
         if new_request:
             new_request.save()
         return render(request, self.template_name)
 
+
 class CompanyProfile(View):
     form_class = CompanyProfileForm
-    template_name = 'customerRequest/form.html'
+    template_name = 'customerRequest/profile.html'
 
     def get(self, request):
-         form = self.form_class()
-         return render(request, 'customerRequest/profile.html', {'form': form})
-    
-    def post(self, request):
         form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        print("###########", {**request.POST})
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            return redirect('create-request')
         return render(request, self.template_name)
+
 
 class CRM(View):
     def get(self, request, *args, **kwargs):
@@ -83,34 +88,42 @@ class MoveCardView(View):
         return HttpResponse('success')
 
 
-def register(request):
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
+class RegisterView(View):
+    form_class = RegisterForm
+    initial = {'key': 'value'}
+    template_name = 'customerRequest/login_register_form.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'Register'})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
         if form.is_valid():
             form.save()
-            form = CreateUserForm()
-            return redirect('login')
-    else:
-        form = CreateUserForm()
 
-    return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'Register'})
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}')
 
+            return redirect(to='/')
 
-def user_login(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request, user)
-            return redirect('create-transact')
-        else:
-            return HttpResponse('Authentication Failed!')
-
-    return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'login'})
+        return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'Register'})
 
 
-def user_logout(request):
-    auth.logout(request)
-    return redirect('login')
+# Class based view that extends from the built in login view to add a remember me functionality
+class CustomLoginView(LoginView):
+    form_class = LoginForm
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data.get('remember_me')
+
+        if not remember_me:
+            # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
+            self.request.session.set_expiry(0)
+
+            # Set session as modified to force data updates/cookie to be saved.
+            self.request.session.modified = True
+
+        # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
+        return super(CustomLoginView, self).form_valid(form)
