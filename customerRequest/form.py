@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.conf import settings
-from .models import Company, CustomerRequest, CustomUser
+from .models import Company, CustomerRequest
 
 class CustomerRequestForm(forms.ModelForm):
 
@@ -30,9 +29,9 @@ class CompanyProfileForm(forms.ModelForm):
             ('business', 'Business')
         ]
         model = Company
-        fields = ['name', 'country', 'city', 'phone', 'tin_number', 'business_classification', 'industry']
+        fields = ['company_name', 'country', 'city', 'phone', 'tin_number', 'business_classification', 'industry']
         widgets = {
-            'name': forms.TextInput(attrs={
+            'company_name': forms.TextInput(attrs={
                 'type': 'text',
                 'placeholder': 'Company name',
                 'class': 'form-control' # Here we have set a bootstrap class 
@@ -50,33 +49,72 @@ class CompanyProfileForm(forms.ModelForm):
             }),
             'phone': forms.NumberInput(attrs={
             'type': 'text',
-            'placeholder': 'city',
+            'placeholder': 'company phone number',
             'class': 'form-control' # Here we have set a bootstrap class 
             }),
             'tin_number': forms.TextInput(attrs={
             'type': 'text',
-            'placeholder': 'city',
+            'placeholder': 'enter tin number',
             'class': 'form-control' # Here we have set a bootstrap class 
             }),
             'business_classification': forms.TextInput(
                 attrs={
             'type': 'text',
-            'placeholder': 'country',
+            'placeholder': 'business type',
             'class': 'form-control' # Here we have set a bootstrap class 
             }),
             'industry': forms.Select(
                 choices=INDUSTRY_CHOICES,
                 attrs={
             'type': 'select',
+            'placeholder': 'Industry type',
             'class': 'form-control' # Here we have set a bootstrap class 
             }),
         }
 
-class CreateUserForm(UserCreationForm):
-    class Meta:
-        model = CustomUser
-        fields = ['first_name','last_name', 'username', 'email', 'password1' ,'password2']
+class RegisterForm(UserCreationForm):
+    # fields we want to include and customize in our form
+    first_name = forms.CharField(max_length=100,
+                                 required=True,
+                                 widget=forms.TextInput(attrs={'placeholder': 'First Name',
+                                                               'class': 'form-control',
+                                                               }))
+    last_name = forms.CharField(max_length=100,
+                                required=True,
+                                widget=forms.TextInput(attrs={'placeholder': 'Last Name',
+                                                              'class': 'form-control',
+                                                              }))
+    username = forms.CharField(max_length=100,
+                               required=True,
+                               widget=forms.TextInput(attrs={'placeholder': 'Username',
+                                                             'class': 'form-control',
+                                                             }))
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'Email',
+                                                           'class': 'form-control',
+                                                           }))
+    password1 = forms.CharField(max_length=50,
+                                required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Password',
+                                                                  'class': 'form-control',
+                                                                  'data-toggle': 'password',
+                                                                  'id': 'password',
+                                                                  }))
+    password2 = forms.CharField(max_length=50,
+                                required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password',
+                                                                  'class': 'form-control',
+                                                                  'data-toggle': 'password',
+                                                                  'id': 'password',
+                                                                  }))
 
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+
+
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
 
 
 class LoginForm(AuthenticationForm):
