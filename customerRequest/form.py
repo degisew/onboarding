@@ -113,10 +113,6 @@ class RegisterForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
 
-
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-
-
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=100,
                                required=True,

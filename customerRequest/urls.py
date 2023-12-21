@@ -1,5 +1,8 @@
 from django.urls import path
-from .views import MoveCardView, createOnBoardRequest,CRM, CompanyProfile, RegisterView
+from django.contrib.auth import views as auth_views
+
+from .form import LoginForm
+from .views import CustomLoginView, MoveCardView, createOnBoardRequest,CRM, CompanyProfile, RegisterView
 
 
 urlpatterns = [
@@ -8,8 +11,9 @@ urlpatterns = [
     path('profile/', CompanyProfile.as_view(), name='profile'),
     path('move_card/', MoveCardView.as_view(), name='move_card'),
     path('register/', RegisterView.as_view(), name='users-register'),
-    # path('', home, name='users-home'),
-    # path('register/', register, name='register'),
-    # path('login/', user_login, name='login'),
-    # path('logout/', user_logout, name='logout'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='customerRequest/logout.html'), name='logout'),
 ]
+
+
+# redirect_authenticated_user=True,template_name='customerRequest/login.html', authentication_form=LoginForm), 

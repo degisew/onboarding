@@ -2,6 +2,8 @@ import json
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views import View
+from django.contrib import auth
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
@@ -91,11 +93,19 @@ class MoveCardView(View):
 class RegisterView(View):
     form_class = RegisterForm
     initial = {'key': 'value'}
-    template_name = 'customerRequest/login_register_form.html'
+    template_name = 'customerRequest/register_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # will redirect to the home page if a user tries to access the register page while logged in
+        if request.user.is_authenticated:
+            return redirect(to='/')
+
+        # else process dispatch as it otherwise normally would
+        return super(RegisterView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
-        return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'Register'})
+        return render(request, 'customerRequest/register.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -106,24 +116,48 @@ class RegisterView(View):
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}')
 
-            return redirect(to='/')
+            return redirect(to='login')
 
-        return render(request, 'customerRequest/login_register_form.html', {'form': form, 'btn_value': 'Register'})
+        return render(request, 'customerRequest/register.html', {'form': form})
 
 
 # Class based view that extends from the built in login view to add a remember me functionality
-class CustomLoginView(LoginView):
+class CustomLoginView(View):
     form_class = LoginForm
+    template_name = 'customerRequest/login.html'
 
-    def form_valid(self, form):
-        remember_me = form.cleaned_data.get('remember_me')
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
-        if not remember_me:
-            # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
-            self.request.session.set_expiry(0)
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            s = auth.login(request, user)
+            print(user, s)
+            print(user.username)
 
-            # Set session as modified to force data updates/cookie to be saved.
-            self.request.session.modified = True
+            try:
+                Company.objects.get(user=user)
+                return redirect('create-request')
 
-        # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
-        return super(CustomLoginView, self).form_valid(form)
+            except Company.DoesNotExist:
+                return redirect('profile')
+
+        else:
+            return HttpResponse('Authentication Failed!')
+
+    # def form_valid(self, form):
+    #     remember_me = form.cleaned_data.get('remember_me')
+
+    #     if not remember_me:
+    #         # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
+    #         self.request.session.set_expiry(0)
+
+    #         # Set session as modified to force data updates/cookie to be saved.
+    #         self.request.session.modified = True
+
+    #     # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
+    #     return super(CustomLoginView, self).form_valid(form)
