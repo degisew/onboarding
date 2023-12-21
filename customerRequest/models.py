@@ -21,6 +21,7 @@ class CustomerRequest(models.Model):
     request_description = models.TextField()
     expected_date = models.DateTimeField()
     anything_else = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='request')
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=255, default='Initiation')
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,7 +41,7 @@ class Company(models.Model):
     COUNTRY_CHOICES = [
         (ETH, 'Ethiopia')
     ]
-    name = models.CharField(max_length=255)
+    company_name = models.CharField(max_length=255)
     country = models.CharField(max_length=255, choices=COUNTRY_CHOICES)
     city = models.CharField(max_length=255)
     phone = models.IntegerField()
@@ -53,4 +54,4 @@ class Company(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.company_name
