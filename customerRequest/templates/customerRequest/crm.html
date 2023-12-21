@@ -15,8 +15,6 @@
           <h5  class="row justify-content-center">{{ stage.name }}</h5>
           {% for card in stage.cards%}
           <div>
-            <!-- class="d-flex flex-column align-items-center justify-content-center mt-3"> -->
-            <!-- card -->
             <div
               id='{{card.id}}'
               ondragstart="dragStart(event,'{{card.id}}')"
@@ -25,9 +23,10 @@
               <div class="card-body px-3 py-3">
                 <h5 class="card-title">{{card.service_type}}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">
-                  {{card.about_platform}}
+                  {{card.user.company}}
                 </h6>
-                <p class="card-text">{{card.request_description}}</p>
+                <p class="card-text">{{card.user.company.city}}</p>
+                <p class="card-text">{{card.expected_date}}</p>
                 <a href="#" class="card-link">Check</a>
                 <a href="#" class="card-link">Another link</a>
                 <input type="hidden" value="{{card.id}}" />
