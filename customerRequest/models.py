@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.contrib.auth.models import Group, Permission
 from django.conf import settings
 from django.db import models
@@ -21,9 +21,9 @@ class CustomerRequest(models.Model):
     request_description = models.TextField()
     expected_date = models.DateTimeField()
     anything_else = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='request')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='request')
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=255, default='Initiation')
+    status = models.CharField(max_length=25, default='Initiation')
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -48,7 +48,7 @@ class Company(models.Model):
     tin_number = models.IntegerField()
     business_classification = models.CharField(max_length=255)
     industry = models.TextField(max_length=255, choices=INDUSTRY_CHOICES)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='company')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='company')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

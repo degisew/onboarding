@@ -14,6 +14,10 @@ from django.utils.decorators import method_decorator
 # @login_required(login_url='/login/')
 
 
+class HomeView(View):
+    def get(self, request):
+        return render(request, 'customerRequest/home.html')
+
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
@@ -24,13 +28,14 @@ class createOnBoardRequest(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class()
+        user = request.user
         description = request.POST.get('description')
         service_type = request.POST.get('service_type')
         number_of_users = request.POST.get('users')
         about = request.POST.get('about_platform')
         expected_date = request.POST.get('expected_date')
         comments = request.POST.get('comments')
-        new_request = CustomerRequest(service_type=service_type, number_of_users=number_of_users,
+        new_request = CustomerRequest(user=user, service_type=service_type, number_of_users=number_of_users,
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
         if new_request:
             new_request.save()
@@ -58,6 +63,9 @@ class CompanyProfile(View):
 class CRM(View):
     def get(self, request, *args, **kwargs):
         # requests = CustomerRequest.objects.filter(status='initiation')
+        # rs = User.objects.all()
+        # for r in rs:
+        #     print("*********************",r.company )
         stages = [
             {'id': 1, 'name': 'Initiation', 'cards': CustomerRequest.objects.filter(
                 status='Initiation').order_by('-created_at')},
@@ -98,7 +106,7 @@ class RegisterView(View):
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
         if request.user.is_authenticated:
-            return redirect(to='/')
+            return redirect(to='home')
 
         # else process dispatch as it otherwise normally would
         return super(RegisterView, self).dispatch(request, *args, **kwargs)
