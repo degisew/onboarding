@@ -3,20 +3,17 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views import View
 from django.contrib import auth
-from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
 from django.contrib import messages
-from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
-from .models import CustomerRequest, Company
+from .form import LoginForm, ModalForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
+from .models import CustomerRequest, Company, Schedule
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-
-# @login_required(login_url='/login/')
 
 
 class HomeView(View):
     def get(self, request):
         return render(request, 'customerRequest/home.html')
+
 
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
@@ -62,10 +59,6 @@ class CompanyProfile(View):
 
 class CRM(View):
     def get(self, request, *args, **kwargs):
-        # requests = CustomerRequest.objects.filter(status='initiation')
-        # rs = User.objects.all()
-        # for r in rs:
-        #     print("*********************",r.company )
         stages = [
             {'id': 1, 'name': 'Initiation', 'cards': CustomerRequest.objects.filter(
                 status='Initiation').order_by('-created_at')},
@@ -169,3 +162,23 @@ class CustomLoginView(View):
 
     #     # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
     #     return super(CustomLoginView, self).form_valid(form)
+
+
+class Modal(View):
+    form_class = ModalForm
+    template_name = 'customerRequest/modal.html'
+    def post(self, request, *args, **kwargs):
+        request_id = request.POST.get('request')
+        try:
+            request_instance = CustomerRequest.objects.get(id=request_id)
+            activity_type = request.POST.get('activity_type')
+            due_date = request.POST.get('due_date')
+            summary = request.POST.get('summary')
+            fee = request.POST.get('fee')
+            new_schedule = Schedule(activity_type=activity_type, due_date=due_date,
+                                    summary=summary, fee=fee, request=request_instance)
+            if new_schedule:
+                new_schedule.save()
+                return redirect('crm')
+        except CustomerRequest.DoesNotExist:
+            print("Doesn't exist")

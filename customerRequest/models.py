@@ -27,7 +27,7 @@ class CustomerRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.status  
+        return self.user.first_name  
 
 
 class Company(models.Model):
@@ -55,3 +55,16 @@ class Company(models.Model):
 
     def __str__(self):
         return self.company_name
+    
+
+class Schedule(models.Model):
+    ACTIVITY_CHOICES = [
+    ('meeting', 'Meeting'),
+    ('call', 'Call'),
+    ('email', 'Email'),
+    ]
+    activity_type = models.CharField(max_length=255, choices=ACTIVITY_CHOICES)
+    due_date = models.DateTimeField()
+    summary = models.TextField(null=True, blank=True)
+    fee = models.TextField(max_length=255)
+    request = models.OneToOneField(CustomerRequest, on_delete=models.CASCADE, related_name='schedule')

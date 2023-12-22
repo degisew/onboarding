@@ -141,15 +141,15 @@ class LoginForm(AuthenticationForm):
         fields = ['username', 'password', 'remember_me']
 
 
-class ModalForm(forms.ModelForm):
-    class Meta:
-        ACTIVITY_CHOICES = [
-            ('meeting', 'Meeting'),
-            ('call', 'Call'),
-            ('email', 'Email'),
-        ]
-        model = Schedule
-        fields = ['activity_type', 'due_date', 'fee', 'summary']
+# class ModalForm(forms.ModelForm):
+    # class Meta:
+    #     ACTIVITY_CHOICES = [
+    #         ('meeting', 'Meeting'),
+    #         ('call', 'Call'),
+    #         ('email', 'Email'),
+    #     ]
+    #     model = Schedule
+    #     fields = ['activity_type', 'due_date', 'fee', 'summary']
         # widgets = {
         #     'activity_type': forms.Select(
         #         choices=ACTIVITY_CHOICES,
