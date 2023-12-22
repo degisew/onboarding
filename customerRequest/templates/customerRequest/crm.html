@@ -27,8 +27,20 @@
                 </h6>
                 <p class="card-text">{{card.user.company.city}}</p>
                 <p class="card-text">{{card.expected_date}}</p>
-                <a href="#" class="card-link">Check</a>
-                <a href="#" class="card-link">Another link</a>
+                <button
+  type="button"
+  class="btn btn-primary"
+  data-toggle="modal"
+  data-target="#exampleModal"
+  data-whatever="@mdo"
+>
+  Schedule
+</button>
+    {% with request=card.id %}
+        {% include 'customerRequest/modal.html'%}
+      {% endwith %}
+      
+    
                 <input type="hidden" value="{{card.id}}" />
               </div>
             </div>
@@ -37,7 +49,6 @@
         </div>
         {% endfor %}
       </div>
-    <!-- </div>-->
   </div> 
 
   <script>

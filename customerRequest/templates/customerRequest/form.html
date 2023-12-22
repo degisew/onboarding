@@ -5,7 +5,6 @@
 <div class="container w-50 my-3 shadow-lg rounded-3">
 <form action="" method="POST" class="row g-3 mx-3 my-3">
     {% csrf_token %}
-    <!-- <form class="row g-3"> -->
       <div class="col-md-6">
         <label for="service-type" class="form-label">Service Type<span class="text-danger">*</span></label>
         <input type="text" name="service_type" class="form-control" id="service_type" required>
@@ -24,9 +23,7 @@
       </div>
       <div class="mb-3"> 
         <label for="id_expected_date">Expected Date:</label>
-        <input type="date" name="expected_date" placeholder="yyyy-mm-dd (DOB)" class="form-control" required="" id="id_expected_date">
-        <!-- <label for="dob" class="form-label">Expected Date</label>
-        <input type="text" name="date" id="datepicker" class="form-control datepicker" required> -->
+        <input type="date" name="expected_date" placeholder="yyyy-mm-dd" class="form-control" required="" id="id_expected_date">
     </div>
       <div class="col-12">
         <label for="comments" class="form-label">Anything else(optional)</label>
@@ -36,9 +33,6 @@
         <button type="submit" class="btn btn-primary">Submit Request</button>
       </div>
       </div>
-    <!-- </form> -->
-  <!-- {{form.as_p}}
-  <input type="submit"  class="btn btn-primary" value="Submit" /> -->
 </form>
 {% endblock %}
 </div>
