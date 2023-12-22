@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.contrib import auth
 from django.contrib import messages
-from .form import LoginForm, ModalForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
+from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
 from .models import CustomerRequest, Company, Schedule
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -49,7 +49,6 @@ class CompanyProfile(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        print("###########", {**request.POST})
         if form.is_valid():
             form.instance.user = request.user
             form.save()
@@ -94,7 +93,7 @@ class MoveCardView(View):
 class RegisterView(View):
     form_class = RegisterForm
     initial = {'key': 'value'}
-    template_name = 'customerRequest/register_form.html'
+    template_name = 'customerRequest/register.html'
 
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
@@ -148,7 +147,9 @@ class CustomLoginView(View):
                 return redirect('profile')
 
         else:
-            return HttpResponse('Authentication Failed!')
+            messages.error(request, 'Invalid Credentials.')
+
+        return render(request, 'customerRequest/login.html')
 
     # def form_valid(self, form):
     #     remember_me = form.cleaned_data.get('remember_me')
@@ -165,7 +166,7 @@ class CustomLoginView(View):
 
 
 class Modal(View):
-    form_class = ModalForm
+    # form_class = ModalForm
     template_name = 'customerRequest/modal.html'
     def post(self, request, *args, **kwargs):
         request_id = request.POST.get('request')
