@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.contrib.auth.decorators import login_required
+from customerRequest.views import CustomLoginView, HomeView, DashboardView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('customer/', include('customerRequest.urls'))
-    
+    path('customer/', include('customerRequest.urls')),
+    path('accounts/login/', CustomLoginView.as_view(), name='login'),
+    path('', HomeView.as_view(), name='home'),
+    path('dashboard/', login_required(DashboardView.as_view()), name='dashboard')
 ]
