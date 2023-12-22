@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.contrib import auth
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
 from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
 from .models import CustomerRequest, Company, Schedule
 from django.views.decorators.csrf import csrf_exempt
@@ -15,13 +16,31 @@ class HomeView(View):
         return render(request, 'customerRequest/home.html')
 
 
+class DashboardView(View):
+    def get(self, request):
+        if request.user.is_staff:
+            return render(request, 'customerRequest/admin_dashboard.html' )
+        return render(request, 'customerRequest/user_dashboard.html')
+    
+    # def dispatch(self, request, *args, **kwargs):
+    #     # will redirect to the home page if a user tries to access the register page while logged in
+    #     if request.user.is_authenticated:
+    #         return redirect(to='dashboard')
+
+        # else process dispatch as it otherwise normally would
+        return super(RegisterView, self).dispatch(request, *args, **kwargs)
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
 
     def get(self, request):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        try:
+            Company.objects.get(user=request.user)
+            return render(request, self.template_name, {'form': form})
+
+        except Company.DoesNotExist:
+            return redirect('profile')
 
     def post(self, request, *args, **kwargs):
         form = self.form_class()
@@ -45,6 +64,13 @@ class CompanyProfile(View):
 
     def get(self, request):
         form = self.form_class()
+        # try:
+        #     profile = Company.objects.get(user=request.user)
+        #     print("&&&&&&&&&&&&&&", profile)
+        #     form = self.form_class(instance=profile)
+        #     return render(request, self.template_name, {'form': form})
+        # except:
+        #     form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
@@ -98,7 +124,7 @@ class RegisterView(View):
     def dispatch(self, request, *args, **kwargs):
         # will redirect to the home page if a user tries to access the register page while logged in
         if request.user.is_authenticated:
-            return redirect(to='home')
+            return redirect(to='dashboard')
 
         # else process dispatch as it otherwise normally would
         return super(RegisterView, self).dispatch(request, *args, **kwargs)
@@ -125,31 +151,21 @@ class RegisterView(View):
 class CustomLoginView(View):
     form_class = LoginForm
     template_name = 'customerRequest/login.html'
-
     def get(self, request):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
+        form = self.form_class()
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
-            s = auth.login(request, user)
-            print(user, s)
-            print(user.username)
-
-            try:
-                Company.objects.get(user=user)
-                return redirect('create-request')
-
-            except Company.DoesNotExist:
-                return redirect('profile')
-
+            auth.login(request, user)
+            return redirect('dashboard')
         else:
             messages.error(request, 'Invalid Credentials.')
-
-        return render(request, 'customerRequest/login.html')
+            return render(request, self.template_name, {'form': form})
 
     # def form_valid(self, form):
     #     remember_me = form.cleaned_data.get('remember_me')
