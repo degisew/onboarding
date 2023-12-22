@@ -2,5 +2,12 @@
 
 
 {% block content %}
-<h1>welcome!</h1>
+<div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+    <h1>welcome!</h1>
+    <div class="d-flex">
+
+        <a href="{% url 'login' %}" class="nav-item nav-link">Log in</a>
+        <a href="{% url 'users-register' %}" class="nav-item nav-link">Sign up</a>
+    </div>
+</div>
 {% endblock %}
