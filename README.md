@@ -127,13 +127,18 @@ To get a local copy up and running follow these simple example steps.
  ```sh
   cd onboarding
   pip install pipenv
-  pipenv install
+  pipenv install    # this will create a virtual env't and install dependencies in the virtual env't.
 ``` 
 
 4. Navigate to the folder called Onboarding/ and open this project using your editor
-### Usage
 
-To run the project, execute the following command:
+### Usage
+To run the project, first activate your virtual environment:
+```sh
+  pipenv shell
+```
+
+Once you have activated, execute the following command to run the server:
 
 ```sh
 cd onboarding
