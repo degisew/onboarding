@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.views import View
 from django.contrib import auth
 from django.contrib import messages
-from django.contrib.auth import views as auth_views
 from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileForm
 from .models import CustomerRequest, Company, Schedule
 from django.views.decorators.csrf import csrf_exempt
@@ -28,7 +27,7 @@ class DashboardView(View):
     #         return redirect(to='dashboard')
 
         # else process dispatch as it otherwise normally would
-        return super(RegisterView, self).dispatch(request, *args, **kwargs)
+        # return super(RegisterView, self).dispatch(request, *args, **kwargs)
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
@@ -55,7 +54,8 @@ class createOnBoardRequest(View):
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
         if new_request:
             new_request.save()
-        return render(request, self.template_name)
+            messages.success(request, 'Request Sent.')
+            return redirect('dashboard')
 
 
 class CompanyProfile(View):
