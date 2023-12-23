@@ -21,7 +21,7 @@ After you're finished please remove all the comments and instructions!
 -->
 
 <!-- <div align="center">
-  <!-- You are encouraged to replace this logo with your own! Otherwise you can also remove it. -->
+  <!-- You are encouraged to replace this logo with your own! Otherwise, you can also remove it. -->
   <!-- <img src="https://user-images.githubusercontent.com/86473715/208989298-61c26953-a6ea-4543-9250-465e28dd057a.png" alt="logo" width="140"  height="auto" />
   <br/> -->
 
@@ -52,9 +52,9 @@ After you're finished please remove all the comments and instructions!
 - [📝 License](#license)
 
 
-[](https://github.com/degisew/onboarding/blob/dev/crm.jpg)
-[](https://github.com/degisew/onboarding/blob/dev/login.jpg)
-[](https://github.com/degisew/onboarding/blob/dev/login.jpg)
+[!](https://github.com/degisew/onboarding/blob/dev/crm.jpg)
+[!](https://github.com/degisew/onboarding/blob/dev/login.jpg)
+[!](https://github.com/degisew/onboarding/blob/dev/login.jpg)
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 Customer Onboarding <a id="about-project"></a>
