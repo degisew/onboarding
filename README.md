@@ -112,7 +112,7 @@ To get a local copy up and running follow these simple example steps.
 
 2. Clone this repo in your terminal or git bash using the command
 ```sh
-  cd Blog
+  cd onboarding
   git clone https://github.com/degisew/onboarding.git
 ```
 
