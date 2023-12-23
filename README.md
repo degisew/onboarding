@@ -54,7 +54,7 @@ After you're finished please remove all the comments and instructions!
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 Customer Onboarding <a id="about-project"></a>
- **Recipe-App** is a web app that automates customer onboarding system for an ideal company. It helps service provider company  to automate service requests and processing. The potential business customers also can send requests on the web.
+ **Customer Onboarding** is a web app that automates customer onboarding system for an ideal company. It helps service provider company  to automate service requests and processing. The potential business customers also can send requests on the web.
 <a name="readme-top"></a>
 
 ## 🛠 Built With <a id="built-with"></a>
