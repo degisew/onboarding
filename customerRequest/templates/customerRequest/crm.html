@@ -19,7 +19,7 @@
               id='{{card.id}}'
               ondragstart="dragStart(event,'{{card.id}}')"
               draggable="true"
-              class="card rounded-3 w-100 mb-3 border-0.5 border-start border-primary border-3 shadow-sm">
+              class="card rounded-3 w-100 mb-3 shadow-sm">
               <div class="card-body px-3 py-3">
                 <h5 class="card-title">{{card.service_type}}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">
@@ -28,18 +28,19 @@
                 <p class="card-text">{{card.user.company.city}}</p>
                 <p class="card-text">{{card.expected_date}}</p>
                 <button
-  type="button"
-  class="btn btn-primary"
-  data-toggle="modal"
-  data-target="#exampleModal"
-  data-whatever="@mdo"
->
-  Schedule
-</button>
-    {% with request=card.id %}
-        {% include 'customerRequest/modal.html'%}
-      {% endwith %}
-      
+                type="button"
+                class="btn btn-outline-success btn-sm"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                data-whatever="@mdo"
+                  >
+                  Schedule
+                </button>
+                {% with request=card.id %}
+                {% include 'customerRequest/modal.html'%}
+                {% endwith %}
+                <!-- {%if card.status == 'Initiation'%} -->
+                <!-- {% endif %} -->
     
                 <input type="hidden" value="{{card.id}}" />
               </div>
@@ -114,7 +115,7 @@ function drop(event) {
   </script>
   <style>
     body {
-      background: rgb(210, 217, 210);
+      background: #dce8dc;
     }
 
     .fill {

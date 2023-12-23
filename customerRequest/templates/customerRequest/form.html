@@ -7,12 +7,31 @@
     {% csrf_token %}
       <div class="col-md-6">
         <label for="service-type" class="form-label">Service Type<span class="text-danger">*</span></label>
-        <input type="text" name="service_type" class="form-control" id="service_type" required>
+        <!-- Example single danger button -->
+          <select class="form-select" aria-label="Select an item" name="service_type">
+          <!-- <option value="">--------</option> -->
+          <option  value="swift">SWIFT Connect</option>
+        </select>
+        <!-- <select name="service_type">
+          <option>--------</option>
+          <option value="swift">SWIFT Connect</option>
+          <option value="call">Call</option>
+          <option value="email">Email</option>
+        </select> -->
+        <!-- <input type="text" name="service_type" class="form-control" id="service_type" required> -->
       </div>
       <div class="col-md-6">
         <label for="users" class="form-label">Number of Users<span class="text-danger">*</span></label>
         <input type="number" name="users" class="form-control" id="users" required>
       </div>
+      <div class="col-md-6">
+        <label for="users" class="form-label">Offer</label>
+        <input type="number" name="offer" placeholder="offer in ETB" class="form-control" id="users" required>
+      </div>
+      <div class="col-md-6 mb-3"> 
+        <label for="id_expected_date">Expected Date:</label>
+        <input type="date" name="expected_date" placeholder="yyyy-mm-dd" class="form-control" required="" id="id_expected_date">
+    </div>
       <div class="col-12">
         <label for="inputAddress" class="form-label">Tell us about your Platform<span class="text-danger">*</span></label>
         <textarea class="form-control" name="about_platform" id="about_platform" rows="3" required></textarea>
@@ -21,10 +40,6 @@
         <label for="inputAddress" class="form-label">Request Description<span class="text-danger">*</span></label>
         <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
       </div>
-      <div class="mb-3"> 
-        <label for="id_expected_date">Expected Date:</label>
-        <input type="date" name="expected_date" placeholder="yyyy-mm-dd" class="form-control" required="" id="id_expected_date">
-    </div>
       <div class="col-12">
         <label for="comments" class="form-label">Anything else(optional)</label>
         <textarea class="form-control" name="comments" id="comments" rows="3"></textarea>
