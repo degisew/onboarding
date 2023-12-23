@@ -52,8 +52,10 @@ After you're finished please remove all the comments and instructions!
 - [📝 License](#license)
 
 <img src="https://github.com/degisew/onboarding/blob/dev/crm.jpg" alt="logo" width="500"  height="auto" />
-<img src="https://github.com/degisew/onboarding/blob/dev/login.jpg" alt="logo" width="500"  height="auto" />
-<img src="https://github.com/degisew/onboarding/blob/dev/login.jpg" alt="logo" width="500"  height="auto" />
+<div class="d-flex">
+<img src="https://github.com/degisew/onboarding/blob/dev/login.jpg" alt="logo" width="300"  height="auto" />
+<img src="https://github.com/degisew/onboarding/blob/dev/sign up.jpg" alt="logo" width="300"  height="auto" />
+</div>
 
 <!-- PROJECT DESCRIPTION -->
 
