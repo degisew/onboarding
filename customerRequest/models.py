@@ -20,6 +20,7 @@ class CustomerRequest(models.Model):
     about_platform = models.TextField()
     request_description = models.TextField()
     expected_date = models.DateTimeField()
+    offer = models.PositiveIntegerField(blank=True, null=True)
     anything_else = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='request')
     created_at = models.DateTimeField(auto_now_add=True)
