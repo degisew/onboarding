@@ -52,9 +52,9 @@ After you're finished please remove all the comments and instructions!
 - [📝 License](#license)
 
 
-[!](https://github.com/degisew/onboarding/blob/dev/crm.jpg)
-[!](https://github.com/degisew/onboarding/blob/dev/login.jpg)
-[!](https://github.com/degisew/onboarding/blob/dev/login.jpg)
+![](https://github.com/degisew/onboarding/blob/dev/crm.jpg)
+![](https://github.com/degisew/onboarding/blob/dev/login.jpg)
+![](https://github.com/degisew/onboarding/blob/dev/login.jpg)
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 Customer Onboarding <a id="about-project"></a>
