@@ -122,10 +122,11 @@ To get a local copy up and running follow these simple example steps.
   git clone https://github.com/degisew/onboarding.git
 ```
 
-3. Run the following command to install all the necessary dependencies including the linters
+3. Run the following command to install all the necessary dependencies
 
  ```sh
   cd onboarding
+  pip install pipenv
   pipenv install
 ``` 
 
