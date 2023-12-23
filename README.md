@@ -54,7 +54,7 @@ After you're finished please remove all the comments and instructions!
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 Customer Onboarding <a id="about-project"></a>
- **Customer Onboarding** is a web app that automates customer onboarding system for an ideal company. It helps service provider company  to automate service requests and processing. The potential business customers also can send requests on the web.
+ **Customer Onboarding** is a web app that automates a customer onboarding system for an ideal company. It helps service provider company  to automate service requests and processing. Potential business customers also can send requests on the web.
 <a name="readme-top"></a>
 
 ## 🛠 Built With <a id="built-with"></a>
@@ -82,7 +82,7 @@ After you're finished please remove all the comments and instructions!
 <!-- Features -->
 ### Key Features <a id="key-features"></a>
 
-- **allow the company to receive requests and process it on the CRM board**
+- **Allows the company to receive requests and process them on the CRM board**
 - **Users can send their service request**
 - **Users can confirm about their request status**
 - **The company can schedule a meeting or call with their users**
@@ -101,7 +101,7 @@ To get a local copy up and running, follow these steps.
 
 ### Prerequisites
 
-In order to run this project you need:
+To run this project you need:
 
 - You should be having [Python](https://python.org/) installed on your computer
 ### Setup
@@ -134,10 +134,10 @@ cd onboarding
 For Mac/Linux run:
  python3 manage.py runserver
 
-For windows run:
+For Windows run:
  python manage.py runserver
 ```
-- This above command will start the django server in your browser
+- This above command will start the Django server in your browser
 
 Runs the app in the development mode.\
 Open [http://localhost:8000](http://localhost:8000) to view it in your browser.
@@ -193,7 +193,7 @@ If you like this project give a ⭐️ to repo.
 
 ## 🙏 Acknowledgments <a id="acknowledgements"></a>
 
-I would like to thank the Haron Computers team.
+I want to thank the Haron Computers team.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
