@@ -51,10 +51,10 @@ After you're finished please remove all the comments and instructions!
 - [❓ FAQ](#faq)
 - [📝 License](#license)
 
+<img src="https://github.com/degisew/onboarding/blob/dev/crm.jpg" alt="logo" width="500"  height="auto" />
+<img src="https://github.com/degisew/onboarding/blob/dev/login.jpg" alt="logo" width="500"  height="auto" />
+<img src="https://github.com/degisew/onboarding/blob/dev/login.jpg" alt="logo" width="500"  height="auto" />
 
-![](https://github.com/degisew/onboarding/blob/dev/crm.jpg)
-![](https://github.com/degisew/onboarding/blob/dev/login.jpg)
-![](https://github.com/degisew/onboarding/blob/dev/login.jpg)
 <!-- PROJECT DESCRIPTION -->
 
 # 📖 Customer Onboarding <a id="about-project"></a>
