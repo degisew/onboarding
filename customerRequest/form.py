@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Company, CustomerRequest, Schedule
+from .models import Company, CustomerRequest
 
 
 class CustomerRequestForm(forms.ModelForm):
@@ -17,8 +17,6 @@ class CustomerRequestForm(forms.ModelForm):
     class Meta:
         model = CustomerRequest
         fields = ['expected_date']
-
-        # labels = ["", ""]
 
 
 class CompanyProfileForm(forms.ModelForm):
@@ -45,35 +43,35 @@ class CompanyProfileForm(forms.ModelForm):
                 choices=COUNTRY_CHOICES,
                 attrs={
                     'type': 'select',
-                    'class': 'form-control'  # Here we have set a bootstrap class
+                    'class': 'form-control' 
                 }),
             'city': forms.TextInput(attrs={
                 'type': 'text',
                 'placeholder': 'city',
-                'class': 'form-control'  # Here we have set a bootstrap class
+                'class': 'form-control' 
             }),
             'phone': forms.NumberInput(attrs={
                 'type': 'text',
                 'placeholder': 'company phone number',
-                'class': 'form-control'  # Here we have set a bootstrap class
+                'class': 'form-control'
             }),
             'tin_number': forms.TextInput(attrs={
                 'type': 'text',
                 'placeholder': 'enter tin number',
-                'class': 'form-control'  # Here we have set a bootstrap class
+                'class': 'form-control'
             }),
             'business_classification': forms.TextInput(
                 attrs={
                     'type': 'text',
                     'placeholder': 'business type',
-                    'class': 'form-control'  # Here we have set a bootstrap class
+                    'class': 'form-control'
                 }),
             'industry': forms.Select(
                 choices=INDUSTRY_CHOICES,
                 attrs={
                     'type': 'select',
                     'placeholder': 'Industry type',
-                    'class': 'form-control'  # Here we have set a bootstrap class
+                    'class': 'form-control'
                 }),
         }
 
@@ -139,43 +137,3 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'remember_me']
-
-
-# class ModalForm(forms.ModelForm):
-    # class Meta:
-    #     ACTIVITY_CHOICES = [
-    #         ('meeting', 'Meeting'),
-    #         ('call', 'Call'),
-    #         ('email', 'Email'),
-    #     ]
-    #     model = Schedule
-    #     fields = ['activity_type', 'due_date', 'fee', 'summary']
-        # widgets = {
-        #     'activity_type': forms.Select(
-        #         choices=ACTIVITY_CHOICES,
-        #         attrs={
-        #             'type': 'text',
-        #             'placeholder': 'Company name',
-        #             'class': 'form-control'  # Here we have set a bootstrap class
-        #         }),
-        #     'due_date': forms.DateTimeInput(
-        #         attrs={
-        #             'type': 'date',
-        #             'placeholder': 'yyyy-mm-dd',
-        #             'class': 'form-control'
-        #         }
-        #     ),
-        #     'fee': forms.TextInput(attrs={
-        #         'type': 'text',
-        #         'placeholder': 'fee',
-        #         'class': 'form-control'  # Here we have set a bootstrap class
-        #     }),
-        #     'summary': forms.Textarea(attrs={
-        #         'type': 'textarea',
-        #         'placeholder': 'type here...',
-        #         'rows': 3, 
-        #         # 'cols': 4,
-        #         'class': 'form-control'  # Here we have set a bootstrap class
-        #     }),
-
-        # }

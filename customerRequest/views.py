@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from .email import send_email
 
+
 class HomeView(View):
     def get(self, request):
         return render(request, 'customerRequest/home.html')
@@ -18,16 +19,9 @@ class HomeView(View):
 class DashboardView(View):
     def get(self, request):
         if request.user.is_staff:
-            return render(request, 'customerRequest/admin_dashboard.html' )
+            return render(request, 'customerRequest/admin_dashboard.html')
         return render(request, 'customerRequest/user_dashboard.html')
-    
-    # def dispatch(self, request, *args, **kwargs):
-    #     # will redirect to the home page if a user tries to access the register page while logged in
-    #     if request.user.is_authenticated:
-    #         return redirect(to='dashboard')
 
-        # else process dispatch as it otherwise normally would
-        # return super(RegisterView, self).dispatch(request, *args, **kwargs)
 class createOnBoardRequest(View):
     form_class = CustomerRequestForm
     template_name = 'customerRequest/form.html'
@@ -45,12 +39,13 @@ class createOnBoardRequest(View):
         form = self.form_class()
         user = request.user
         description = request.POST.get('description')
+        offer = request.POST.get('offer')
         service_type = request.POST.get('service_type')
         number_of_users = request.POST.get('users')
         about = request.POST.get('about_platform')
         expected_date = request.POST.get('expected_date')
         comments = request.POST.get('comments')
-        new_request = CustomerRequest(user=user, service_type=service_type, number_of_users=number_of_users,
+        new_request = CustomerRequest(user=user, service_type=service_type, number_of_users=number_of_users, offer=offer,
                                       about_platform=about, request_description=description, expected_date=expected_date, anything_else=comments)
         if new_request:
             new_request.save()
@@ -64,13 +59,6 @@ class CompanyProfile(View):
 
     def get(self, request):
         form = self.form_class()
-        # try:
-        #     profile = Company.objects.get(user=request.user)
-        #     print("&&&&&&&&&&&&&&", profile)
-        #     form = self.form_class(instance=profile)
-        #     return render(request, self.template_name, {'form': form})
-        # except:
-        #     form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
@@ -147,10 +135,10 @@ class RegisterView(View):
         return render(request, 'customerRequest/register.html', {'form': form})
 
 
-# Class based view that extends from the built in login view to add a remember me functionality
 class CustomLoginView(View):
     form_class = LoginForm
     template_name = 'customerRequest/login.html'
+
     def get(self, request):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
@@ -167,23 +155,10 @@ class CustomLoginView(View):
             messages.error(request, 'Invalid Credentials.')
             return render(request, self.template_name, {'form': form})
 
-    # def form_valid(self, form):
-    #     remember_me = form.cleaned_data.get('remember_me')
-
-    #     if not remember_me:
-    #         # set session expiry to 0 seconds. So it will automatically close the session after the browser is closed.
-    #         self.request.session.set_expiry(0)
-
-    #         # Set session as modified to force data updates/cookie to be saved.
-    #         self.request.session.modified = True
-
-    #     # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
-    #     return super(CustomLoginView, self).form_valid(form)
-
-
 class Modal(View):
     # form_class = ModalForm
     template_name = 'customerRequest/modal.html'
+
     def post(self, request, *args, **kwargs):
         request_id = request.POST.get('request')
         try:
@@ -196,8 +171,8 @@ class Modal(View):
                                     summary=summary, fee=fee, request=request_instance)
             if new_schedule:
                 new_schedule.save()
-                print('****************', request_instance.user.email)
-                send_email(request_instance.user.email, request_instance.user.first_name, due_date, activity_type)
+                send_email(request_instance.user.email,
+                           request_instance.user.first_name, due_date, activity_type)
                 return redirect('crm')
         except CustomerRequest.DoesNotExist:
             print("Doesn't exist")
