@@ -90,6 +90,7 @@ After you're finished please remove all the comments and instructions!
 
 - **Allows the company to receive requests and process them on the CRM board**
 - **Users can send their service request**
+- **users receive email notifications about the schedule**
 - **Users can confirm about their request status**
 - **The company can schedule a meeting or call with their users**
 
