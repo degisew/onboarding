@@ -8,7 +8,7 @@ from .form import LoginForm, RegisterForm, CustomerRequestForm, CompanyProfileFo
 from .models import CustomerRequest, Company, Schedule
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-
+from .email import send_email
 
 class HomeView(View):
     def get(self, request):
@@ -196,6 +196,8 @@ class Modal(View):
                                     summary=summary, fee=fee, request=request_instance)
             if new_schedule:
                 new_schedule.save()
+                print('****************', request_instance.user.email)
+                send_email(request_instance.user.email, request_instance.user.first_name, due_date, activity_type)
                 return redirect('crm')
         except CustomerRequest.DoesNotExist:
             print("Doesn't exist")
