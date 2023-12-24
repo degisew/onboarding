@@ -109,7 +109,8 @@ To get a local copy up and running, follow these steps.
 
 To run this project you need:
 
-- You should be having [Python](https://python.org/) installed on your computer
+- to have [Python](https://python.org/) installed on your computer
+- to have [MariaDB](https://mariadb.com/) installed on your computer
 ### Setup
 
 To get a local copy up and running follow these simple example steps.
